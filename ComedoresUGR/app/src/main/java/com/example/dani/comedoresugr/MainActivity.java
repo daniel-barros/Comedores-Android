@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements MenuFetcherResult
     private ListView menuListView;
     private MenuFetcher fetcher;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,27 +26,29 @@ public class MainActivity extends AppCompatActivity implements MenuFetcherResult
         fetcher.execute();
     }
 
+
     public void onFetchEnd(ArrayList<Menu> menus, Exception e) {
-        if (menus != null && !menus.isEmpty()) {
+        if (menus != null && !menus.isEmpty()) {    // success: populate the list view
             MenuAdapter adapter = new MenuAdapter(this, menus);
             menuListView.setAdapter(adapter);
             fetcher = null;
-        } else {
-            showAlertDialog(e);
+        } else {    // failure: show error dialog
+            showFetchErrorDialog(e);
         }
     }
 
 
-    private void showAlertDialog(Exception e) {
-        String message = "Unknown error";
+    // Shows up an alert dialog with an error message and an option to retry the fetch.
+    private void showFetchErrorDialog(Exception e) {
+        String message = getResources().getString(R.string.unknown_error);
         if (e != null) {
             message = e.getLocalizedMessage();
         }
-        Log.d("error", "alert dialog");
+
         new AlertDialog.Builder(this)
-                .setTitle("Fetch error")
+                .setTitle(getResources().getString(R.string.fetch_error))
                 .setMessage(message)
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.retry), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         fetcher = new MenuFetcher(MainActivity.this, MainActivity.this.getResources().getString(R.string.menu_url));
                         fetcher.execute();
