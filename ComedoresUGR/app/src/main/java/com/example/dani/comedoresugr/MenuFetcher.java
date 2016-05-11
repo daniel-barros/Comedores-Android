@@ -1,8 +1,10 @@
 package com.example.dani.comedoresugr;
 
 import org.jsoup.Jsoup;
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.io.IOException;
@@ -29,16 +31,26 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+        menus = new ArrayList();
         try {
-            Document document = Jsoup.connect(url).get();
-            // TODO: Parse document
-            menus = new ArrayList<Menu>();
-            Menu m = new Menu("Plato Alpujarreño.\nEnsalada de pasta con atún y aceitunas negras.\n Macedonia con nata.", "Mayo 15 Jueves");
-            for (int i = 0; i < 6; i++) {
-                menus.add(m);
-            }
+            Connection connection = Jsoup.connect(url);
+            if (connection != null) {
+                Document document = connection.get();
 
-        } catch (IOException e) {
+                if (document != null) {
+                    Elements menuNodes = document.select("#plato");
+                    for (Element menuNode: menuNodes) {
+                        Element dateNode = menuNode.select("#diaplato").first();
+                        Element dishNode = menuNode.select("#platos").first();
+                        if (dateNode != null && dishNode != null) {
+                            menus.add(new Menu(dateNode.text(), dishNode.text()));
+                        } else {
+                            System.out.print("Couldn't parse node:" + menuNode.text());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
             // TODO: Error handling
             e.printStackTrace();
         }

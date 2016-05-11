@@ -40,13 +40,14 @@ public class MenuAdapter extends BaseAdapter {
         // Get data
         Menu menu = (Menu) getItem(position);
 
-        // Get view
+        // Get views
         View rowView = mInflater.inflate(R.layout.menu_list_item, parent, false);
         TextView dishTextView = (TextView) rowView.findViewById(R.id.dishes);
         TextView monthTextView = (TextView) rowView.findViewById(R.id.month);
         TextView dayNumberTextView = (TextView) rowView.findViewById(R.id.dayNumber);
         TextView dayNameTextView = (TextView) rowView.findViewById(R.id.dayName);
 
+        // Fill views with data
         dishTextView.setText(menu.getRawDishes());
         monthTextView.setText(menu.getRawMonth());
         dayNameTextView.setText(menu.getRawDayName());

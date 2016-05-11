@@ -41,7 +41,7 @@ public class Menu {
     }
 
 
-    public Menu(String dishes, String date) {
+    public Menu(String date, String dishes) {
         rawDishes = dishes;
         rawDate = date;
 
@@ -59,7 +59,7 @@ public class Menu {
         }
 
         try {
-            // TODO: Process date
+            // TODO: Process date and highlight today's date
             //month = new Integer("asdf");
         } catch (Exception e) {}
     }
