@@ -6,29 +6,28 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import android.util.Log;
 
 
 interface MenuFetcherResultHandler {
-    void onFetchEnd(ArrayList<Menu> menus);
+    void onFetchEnd(ArrayList<Menu> menus, Exception exception);
 }
 
 
-// Fetches the week menu and calls onFetchEnd() on its delegate with the result.
 public class MenuFetcher extends AsyncTask<Void, Void, Void> {
 
-    private MenuFetcherResultHandler delegate;
-    private ArrayList<Menu> menus;
-    private String url;
+    private MenuFetcherResultHandler delegate;  // this will get onFetchEnd() called when fetching ends.
+    private String url; // The url containing the html to parse.
+
+    private ArrayList<Menu> menus;  // the parsed menu list.
+    private Exception fetchException;   // the exception raised while fetching, if any.
+
 
     public MenuFetcher(MenuFetcherResultHandler delegate, String url) {
         this.delegate = delegate;
         this.url = url;
     }
+
 
     @Override
     protected Void doInBackground(Void... params) {
@@ -56,16 +55,19 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
                 }
             }
         } catch (Exception e) {
-            // TODO: Error handling
+            fetchException = e;
             e.printStackTrace();
         }
         return null;
     }
 
+
     @Override
     protected void onPostExecute(Void result) {
-        if (delegate != null && menus != null) {
-            delegate.onFetchEnd(menus);
+        if (delegate != null) {
+            delegate.onFetchEnd(menus, fetchException);
         }
+        menus = null;
+        fetchException = null;
     }
 }
