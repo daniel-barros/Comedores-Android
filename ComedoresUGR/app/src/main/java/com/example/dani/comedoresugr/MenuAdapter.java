@@ -48,10 +48,10 @@ public class MenuAdapter extends BaseAdapter {
         TextView dayNameTextView = (TextView) rowView.findViewById(R.id.dayName);
 
         // Fill views with data
-        dishTextView.setText(menu.getRawDishes());
-        monthTextView.setText(menu.getRawMonth());
-        dayNameTextView.setText(menu.getRawDayName());
-        dayNumberTextView.setText(menu.getRawDayNumber());
+        dishTextView.setText(menu.getDishes());
+        monthTextView.setText(menu.getMonth());
+        dayNameTextView.setText(menu.getDayName());
+        dayNumberTextView.setText(menu.getDayNumber());
 
         return rowView;
     }

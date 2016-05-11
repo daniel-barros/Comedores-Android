@@ -10,6 +10,7 @@ import android.os.Bundle;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import android.util.Log;
 
 
 interface MenuFetcherResultHandler {
@@ -36,14 +37,18 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
             Connection connection = Jsoup.connect(url);
             if (connection != null) {
                 Document document = connection.get();
-
                 if (document != null) {
                     Elements menuNodes = document.select("#plato");
                     for (Element menuNode: menuNodes) {
                         Element dateNode = menuNode.select("#diaplato").first();
-                        Element dishNode = menuNode.select("#platos").first();
-                        if (dateNode != null && dishNode != null) {
-                            menus.add(new Menu(dateNode.text(), dishNode.text()));
+                        Element dishesNode = menuNode.select("#platos").first();
+                        if (dateNode != null && dishesNode != null) {
+                            String dishes = "";
+                            for (Element dishNode: dishesNode.children()) {
+                                dishes += dishNode.text() + "\n";
+                            }
+                            dishes = dishes.substring(0, dishes.length() - 2);
+                            menus.add(new Menu(dateNode.text(), dishes));
                         } else {
                             System.out.print("Couldn't parse node:" + menuNode.text());
                         }
