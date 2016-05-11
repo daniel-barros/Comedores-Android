@@ -46,7 +46,7 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
                             for (Element dishNode: dishesNode.children()) {
                                 dishes += dishNode.text() + "\n";
                             }
-                            dishes = dishes.substring(0, dishes.length() - 2);
+                            dishes = dishes.substring(0, dishes.length() - 1);
                             menus.add(new Menu(dateNode.text(), dishes));
                         } else {
                             System.out.print("Couldn't parse node:" + menuNode.text());
