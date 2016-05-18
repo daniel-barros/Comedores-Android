@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.lang.reflect.Array;
+import java.net.UnknownHostException;
 import java.util.TreeMap;
 import java.util.Set;
 import java.util.HashSet;
@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import java.io.IOException;
 
 
-// TODO: Pull to refresh
+// TODO: On row click: show info on new activity
+// TODO: Error: show better messages (no connection)
 public class MainActivity extends AppCompatActivity implements MenuFetcherResultHandler {
 
     private ListView menuListView;
@@ -58,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements MenuFetcherResult
     private void showFetchErrorDialog(Exception e) {
         String message = getResources().getString(R.string.unknown_error);
         if (e != null) {
-            message = e.getLocalizedMessage();
+            if (e instanceof UnknownHostException) {
+                message = getResources().getString(R.string.no_connection);
+            } else {
+                message = e.getMessage();
+            }
         }
 
         new AlertDialog.Builder(this)

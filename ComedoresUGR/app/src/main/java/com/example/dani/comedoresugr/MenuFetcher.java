@@ -32,18 +32,20 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         menus = new ArrayList();
+        Connection.Response response = null;
         try {
+            response = Jsoup.connect(url).execute();  // tests connection available and throws exception
             Connection connection = Jsoup.connect(url);
             if (connection != null) {
                 Document document = connection.get();
                 if (document != null) {
                     Elements menuNodes = document.select("#plato");
-                    for (Element menuNode: menuNodes) {
+                    for (Element menuNode : menuNodes) {
                         Element dateNode = menuNode.select("#diaplato").first();
                         Element dishesNode = menuNode.select("#platos").first();
                         if (dateNode != null && dishesNode != null) {
                             String dishes = "";
-                            for (Element dishNode: dishesNode.children()) {
+                            for (Element dishNode : dishesNode.children()) {
                                 dishes += dishNode.text() + "\n";
                             }
                             dishes = dishes.substring(0, dishes.length() - 1);
@@ -56,7 +58,6 @@ public class MenuFetcher extends AsyncTask<Void, Void, Void> {
             }
         } catch (Exception e) {
             fetchException = e;
-            e.printStackTrace();
         }
         return null;
     }

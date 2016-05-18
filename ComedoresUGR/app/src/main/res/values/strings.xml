@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Comedores UGR</string>
     <string name="menu_url">http://comedoresugr.tcomunica.org</string>
-    <string name="fetch_error">Fetch error</string>
-    <string name="unknown_error">Unknown error</string>
+    <string name="fetch_error">Error</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="no_connection">No hay conexión</string>
     <string name="retry">Retry</string>
 </resources>
