@@ -1,6 +1,9 @@
 package com.example.dani.comedoresugr;
 
-public class Menu {
+import android.os.Parcelable;
+import android.os.Parcel;
+
+public class Menu implements Parcelable {
 
     private String dishes;
     private String rawDate;
@@ -38,5 +41,32 @@ public class Menu {
     public Menu(String date, String dishes) {
         this.dishes = dishes;
         rawDate = date;
+    }
+
+
+    // Parcelable
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(dishes);
+        out.writeString(rawDate);
+    }
+
+    public static final Parcelable.Creator<Menu> CREATOR = new Parcelable.Creator<Menu>() {
+        public Menu createFromParcel(Parcel in) {
+            return new Menu(in);
+        }
+
+        public Menu[] newArray(int size) {
+            return new Menu[size];
+        }
+    };
+
+    private Menu(Parcel in) {
+        dishes = in.readString();
+        rawDate = in.readString();
     }
 }

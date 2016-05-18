@@ -5,4 +5,5 @@
     <string name="unknown_error">Error desconocido</string>
     <string name="no_connection">No hay conexión</string>
     <string name="retry">Retry</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>

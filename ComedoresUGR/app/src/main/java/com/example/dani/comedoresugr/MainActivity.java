@@ -13,11 +13,14 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import java.io.IOException;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.content.Intent;
+import android.os.Parcelable;
 
 
-// TODO: On row click: show info on new activity
-// TODO: Error: show better messages (no connection)
+// TODO: Persist using Parcelable
 public class MainActivity extends AppCompatActivity implements MenuFetcherResultHandler {
 
     private ListView menuListView;
@@ -30,6 +33,15 @@ public class MainActivity extends AppCompatActivity implements MenuFetcherResult
         setContentView(R.layout.activity_main);
 
         menuListView = (ListView) findViewById(R.id.menu_list_view);
+        menuListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                Menu menu = (Menu)adapter.getItemAtPosition(position);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("menu", menu);
+                MainActivity.this.startActivity(intent);
+            }
+        });
 
         // Use saved menu
         ArrayList<Menu> savedMenus = getSavedMenu();
